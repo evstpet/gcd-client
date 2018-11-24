@@ -1,13 +1,17 @@
 package com.pes.gcdclient.application.rest;
 
-import com.pes.gcdclient.application.rest.dto.GcdRequest;
-import com.pes.gcdclient.domain.service.GcdService;
+import com.pes.gcdclient.application.rest.dto.GcdRequestDto;
+import com.pes.gcdclient.application.rest.dto.GcdResultDto;
+import com.pes.gcdclient.application.service.GcdService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 public class GcdClientController {
@@ -20,10 +24,15 @@ public class GcdClientController {
         this.gcdService = gcdService;
     }
 
-    @RequestMapping("/calculate-gcd")
-    public Long calculateGcd(@RequestBody GcdRequest gcdRequest) {
-        LOGGER.info("Request: " + gcdRequest);
-        return gcdService.calculateGcd(gcdRequest.getFirst(), gcdRequest.getSecond());
+    @RequestMapping(value = "/calculate-gcd", consumes = {"application/json"})
+    public Long calculateGcd(@Valid @RequestBody GcdRequestDto gcdRequestDto) {
+        LOGGER.info("Request: " + gcdRequestDto);
+        return gcdService.calculateGcd(gcdRequestDto.getFirst(), gcdRequestDto.getSecond());
     }
 
+    @RequestMapping("/get-result/{gcd-id}")
+    public GcdResultDto getGcd(@PathVariable("gcd-id") Long gcdId) {
+        LOGGER.info("Looking for gcd with id: " + gcdId);
+        return gcdService.getGcdCalculationResult(gcdId);
+    }
 }

@@ -1,4 +1,4 @@
-package com.pes.gcdclient.domain.event.dto;
+package com.pes.gcdclient.application.event.dto;
 
 import lombok.Getter;
 import lombok.ToString;

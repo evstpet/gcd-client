@@ -14,6 +14,8 @@ public class GcdEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    private Long first;
+    private Long second;
     private Long result;
     private String error;
 }
