@@ -1,4 +1,4 @@
-It's self contained gcd-client service of GCD calculation application
+It's gcd-client service of GCD calculation application
 
 Deploying instructions:
 - Add application.properties file to artifact folder or set up properties in CI server.
