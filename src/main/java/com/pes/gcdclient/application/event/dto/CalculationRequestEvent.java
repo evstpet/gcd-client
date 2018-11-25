@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Getter
 @Builder
-public class CalculationRequest implements Serializable {
+public class CalculationRequestEvent implements Serializable {
     private Long id;
     private Long first;
     private Long second;

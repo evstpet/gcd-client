@@ -23,23 +23,23 @@ public class GcdStorageService {
 
     @Transactional
     public Long saveNew(Long first, Long second) {
-        GcdEntity newGcd = new GcdEntity();
-        newGcd.setFirst(first);
-        newGcd.setSecond(second);
+        GcdEntity newGcdEntity = new GcdEntity();
+        newGcdEntity.setFirst(first);
+        newGcdEntity.setSecond(second);
 
-        newGcd = repository.save(newGcd);
-        return newGcd.getId();
+        newGcdEntity = repository.save(newGcdEntity);
+        return newGcdEntity.getId();
     }
 
     @Transactional
     public void save(Calculation calculation) {
-        GcdEntity entity = new GcdEntity();
+        GcdEntity gcdEntity = new GcdEntity();
 
-        entity.setId(calculation.getId());
-        entity.setResult(calculation.getResult());
-        entity.setError(calculation.getError());
+        gcdEntity.setId(calculation.getId());
+        gcdEntity.setResult(calculation.getResult());
+        gcdEntity.setError(calculation.getError());
 
-        repository.save(entity);
+        repository.save(gcdEntity);
     }
 
     @Transactional(readOnly = true)

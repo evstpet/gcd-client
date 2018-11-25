@@ -1,6 +1,6 @@
 package com.pes.gcdclient.application.event;
 
-import com.pes.gcdclient.application.event.dto.CalculationResult;
+import com.pes.gcdclient.application.event.dto.CalculationResultEvent;
 import com.pes.gcdclient.domain.storage.GcdStorageService;
 import com.pes.gcdclient.domain.vo.Calculation;
 import org.slf4j.Logger;
@@ -18,13 +18,13 @@ import java.util.Optional;
 import static org.springframework.amqp.core.ExchangeTypes.TOPIC;
 
 @Component
-public class Receiver {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Receiver.class);
+public class EventListener {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventListener.class);
 
     private GcdStorageService storageService;
 
     @Autowired
-    public Receiver(GcdStorageService storageService) {
+    public EventListener(GcdStorageService storageService) {
         this.storageService = storageService;
     }
 
@@ -35,17 +35,17 @@ public class Receiver {
                     key = {"gcd.calculator.routing.key"}
             )
     })
-    public void listen(Message<CalculationResult> message) {
-        CalculationResult result = message.getPayload();
+    public void listen(Message<CalculationResultEvent> message) {
+        CalculationResultEvent result = message.getPayload();
         LOGGER.info("Received result: " + result);
 
         storageService.save(
                 Optional.ofNullable(result)
                         .map(
-                                calculationResult -> Calculation.builder()
-                                        .id(calculationResult.getId())
-                                        .result(calculationResult.getResult())
-                                        .error(calculationResult.getError())
+                                calculationResultEvent -> Calculation.builder()
+                                        .id(calculationResultEvent.getId())
+                                        .result(calculationResultEvent.getResult())
+                                        .error(calculationResultEvent.getError())
                                         .build()
                         ).orElse(null)
         );

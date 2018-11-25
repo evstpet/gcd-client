@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Getter
 @ToString
-public class CalculationResult implements Serializable {
+public class CalculationResultEvent implements Serializable {
     private Long id;
     private Long result;
     private String error;

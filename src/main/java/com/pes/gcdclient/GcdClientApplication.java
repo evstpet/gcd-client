@@ -1,7 +1,7 @@
 package com.pes.gcdclient;
 
-import com.pes.gcdclient.application.event.dto.CalculationRequest;
-import com.pes.gcdclient.application.event.dto.CalculationResult;
+import com.pes.gcdclient.application.event.dto.CalculationRequestEvent;
+import com.pes.gcdclient.application.event.dto.CalculationResultEvent;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
@@ -32,10 +32,10 @@ public class GcdClientApplication {
 	public DefaultClassMapper classMapper() {
 		DefaultClassMapper classMapper = new DefaultClassMapper();
 		Map<String, Class<?>> idClassMapping = new HashMap<>();
-		idClassMapping.put("calculationResult", CalculationResult.class);
-		idClassMapping.put("calculationRequest", CalculationRequest.class);
+		idClassMapping.put("calculationResult", CalculationResultEvent.class);
+		idClassMapping.put("calculationRequest", CalculationRequestEvent.class);
 		classMapper.setIdClassMapping(idClassMapping);
-		classMapper.setTrustedPackages("com.pes.*");
+		classMapper.setTrustedPackages("*");
 		return classMapper;
 	}
 
