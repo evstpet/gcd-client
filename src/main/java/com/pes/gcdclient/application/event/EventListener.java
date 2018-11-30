@@ -31,8 +31,8 @@ public class EventListener {
     @RabbitListener(bindings = {
             @QueueBinding(
                     value = @Queue("${spring.rabbitmq.template.queue}"),
-                    exchange = @Exchange(value = "gcd.calculator.exchange", type = TOPIC),
-                    key = {"gcd.calculator.routing.key"}
+                    exchange = @Exchange(value = "${outcome.exchange}", type = TOPIC),
+                    key = {"${routing.key}"}
             )
     })
     public void listen(Message<CalculationResultEvent> message) {
