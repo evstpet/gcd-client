@@ -18,7 +18,7 @@ public class RabbitEventSender implements EventSender {
     @Value("${spring.rabbitmq.template.exchange}")
     private String outcomeExchange;
 
-    @Value("${routing.key}")
+    @Value("${calculator.routing.key}")
     private String routingKey;
 
     @Autowired
