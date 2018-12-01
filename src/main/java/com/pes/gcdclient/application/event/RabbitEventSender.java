@@ -2,8 +2,7 @@ package com.pes.gcdclient.application.event;
 
 import com.pes.gcdclient.application.event.dto.CalculationRequestEvent;
 import com.pes.gcdclient.domain.vo.Calculation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Service;
 import static com.pes.gcdclient.domain.mapper.Gcds.calculationRequestEventFromCalculation;
 
 @Service
+@Slf4j
 public class RabbitEventSender implements EventSender {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RabbitEventSender.class);
 
     private RabbitTemplate rabbitTemplate;
 
@@ -32,7 +31,7 @@ public class RabbitEventSender implements EventSender {
     public void sendEvent(Calculation calculation) {
         CalculationRequestEvent requestEvent = calculationRequestEventFromCalculation(calculation);
 
-        LOGGER.info("Send gcd calculation request for id = " + requestEvent.getId());
+        log.info("Send gcd calculation request for id = " + requestEvent.getId());
 
         rabbitTemplate.convertAndSend(
                 outcomeExchange,

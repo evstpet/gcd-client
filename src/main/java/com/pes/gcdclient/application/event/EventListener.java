@@ -3,8 +3,7 @@ package com.pes.gcdclient.application.event;
 import com.pes.gcdclient.application.event.dto.CalculationResultEvent;
 import com.pes.gcdclient.domain.mapper.Gcds;
 import com.pes.gcdclient.domain.storage.GcdStorageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -18,8 +17,8 @@ import java.util.Optional;
 import static org.springframework.amqp.core.ExchangeTypes.TOPIC;
 
 @Component
+@Slf4j
 public class EventListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventListener.class);
 
     private GcdStorageService storageService;
 
@@ -37,7 +36,7 @@ public class EventListener {
     })
     public void listen(Message<CalculationResultEvent> message) {
         CalculationResultEvent result = message.getPayload();
-        LOGGER.info("Received result: " + result);
+        log.info("Received result: " + result);
 
         storageService.save(
                 Optional.ofNullable(result)

@@ -5,6 +5,8 @@ import com.pes.gcdclient.application.rest.dto.GcdResultDto;
 import com.pes.gcdclient.domain.mapper.Gcds;
 import com.pes.gcdclient.domain.storage.GcdStorageService;
 import com.pes.gcdclient.domain.vo.Calculation;
+import com.pes.gcdclient.infrastructure.exception.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import static java.util.Objects.isNull;
 
 
 @Service
+@Slf4j
 public class GcdService {
 
     private GcdStorageService gcdStorageService;
@@ -55,6 +58,10 @@ public class GcdService {
     public GcdResultDto getGcdCalculationResult(Long gcdId) {
         return Optional.ofNullable(gcdStorageService.getGcdCalculation(gcdId))
                 .map(Gcds::gcdResultDtoFromCalculation)
-                .orElse(null);
+                .orElseThrow(() -> {
+                    String message = "Can't find gcd for id: " + gcdId;
+                    log.error(message);
+                    return new ResourceNotFoundException(message);
+                });
     }
 }
