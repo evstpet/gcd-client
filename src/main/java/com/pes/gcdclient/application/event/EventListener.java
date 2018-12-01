@@ -1,8 +1,8 @@
 package com.pes.gcdclient.application.event;
 
 import com.pes.gcdclient.application.event.dto.CalculationResultEvent;
+import com.pes.gcdclient.domain.mapper.Gcds;
 import com.pes.gcdclient.domain.storage.GcdStorageService;
-import com.pes.gcdclient.domain.vo.Calculation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -41,13 +41,8 @@ public class EventListener {
 
         storageService.save(
                 Optional.ofNullable(result)
-                        .map(
-                                calculationResultEvent -> Calculation.builder()
-                                        .id(calculationResultEvent.getId())
-                                        .result(calculationResultEvent.getResult())
-                                        .error(calculationResultEvent.getError())
-                                        .build()
-                        ).orElse(null)
+                        .map(Gcds::calculationFromCalculationResultEvent)
+                        .orElse(null)
         );
     }
 }

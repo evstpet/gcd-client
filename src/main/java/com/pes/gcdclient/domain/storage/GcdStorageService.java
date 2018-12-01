@@ -1,15 +1,14 @@
 package com.pes.gcdclient.domain.storage;
 
+import com.pes.gcdclient.domain.mapper.Gcds;
 import com.pes.gcdclient.domain.vo.Calculation;
-import com.pes.gcdclient.domain.vo.GcdStatus;
 import com.pes.gcdclient.infrastructure.db.GcdRepository;
 import com.pes.gcdclient.infrastructure.db.entity.GcdEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
-import static java.util.Objects.isNull;
+import static com.pes.gcdclient.domain.mapper.Gcds.gcdEntityFromCalculation;
 
 @Service
 public class GcdStorageService {
@@ -33,36 +32,20 @@ public class GcdStorageService {
 
     @Transactional
     public void save(Calculation calculation) {
-        GcdEntity gcdEntity = new GcdEntity();
-
-        gcdEntity.setId(calculation.getId());
-        gcdEntity.setResult(calculation.getResult());
-        gcdEntity.setError(calculation.getError());
-
-        repository.save(gcdEntity);
+        repository.save(gcdEntityFromCalculation(calculation));
     }
 
     @Transactional(readOnly = true)
     public Calculation getGcdCalculation(Long gcdId) {
         return repository.findById(gcdId)
-                .map(entity -> Calculation.builder()
-                        .id(entity.getId())
-                        .status(getGcdStatus(entity))
-                        .result(entity.getResult())
-                        .error(entity.getError())
-                        .build()
-                ).orElse(null);
+                .map(Gcds::calculationFromGcdEntity)
+                .orElse(null);
     }
 
-    private GcdStatus getGcdStatus(GcdEntity entity) {
-        if (!StringUtils.isEmpty(entity.getError())) {
-            return GcdStatus.ERROR;
-        }
-
-        if (isNull(entity.getResult())) {
-            return GcdStatus.NOT_COMPLETED;
-        }
-
-        return GcdStatus.COMPLETED;
+    @Transactional(readOnly = true)
+    public Calculation getGcdCalculationByFirstAndSecond(Long first, Long second) {
+        return repository.findByFirstAndSecond(first, second)
+                .map(Gcds::calculationFromGcdEntity)
+                .orElse(null);
     }
 }
