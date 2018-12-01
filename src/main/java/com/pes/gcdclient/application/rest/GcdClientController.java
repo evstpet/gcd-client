@@ -6,12 +6,13 @@ import com.pes.gcdclient.application.service.GcdService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 public class GcdClientController {
@@ -24,7 +25,10 @@ public class GcdClientController {
         this.gcdService = gcdService;
     }
 
-    @RequestMapping(value = "/calculate-gcd", consumes = {"application/json"})
+    @RequestMapping(value = "/calculate-gcd",
+                    method = POST,
+                    consumes = {APPLICATION_JSON_VALUE},
+                    produces = {TEXT_PLAIN_VALUE})
     public Long calculateGcd(@Valid @RequestBody GcdRequestDto gcdRequestDto) {
         LOGGER.info("Request: " + gcdRequestDto);
         return gcdService.calculateGcd(gcdRequestDto.getFirst(), gcdRequestDto.getSecond());
