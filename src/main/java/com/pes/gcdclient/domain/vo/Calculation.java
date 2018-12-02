@@ -1,14 +1,12 @@
 package com.pes.gcdclient.domain.vo;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
 @ToString
+@EqualsAndHashCode
 public class Calculation {
     private Long id;
     private Long first;

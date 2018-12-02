@@ -14,6 +14,7 @@ import javax.validation.Valid;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
@@ -36,7 +37,8 @@ public class GcdClientController {
         return gcdService.calculateGcd(gcdRequestDto.getFirst(), gcdRequestDto.getSecond());
     }
 
-    @RequestMapping("/get-result/{gcd-id}")
+    @RequestMapping(value = "/get-result/{gcd-id}",
+                    method = GET)
     public GcdResultDto getGcd(@PathVariable("gcd-id") Long gcdId) {
         log.info("Looking for gcd with id: " + gcdId);
         return gcdService.getGcdCalculationResult(gcdId);

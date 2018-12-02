@@ -16,15 +16,21 @@ public class RabbitEventSender implements EventSender {
 
     private RabbitTemplate rabbitTemplate;
 
-    @Value("${spring.rabbitmq.template.exchange}")
     private String outcomeExchange;
 
-    @Value("${calculator.routing.key}")
     private String routingKey;
 
     @Autowired
-    public RabbitEventSender(RabbitTemplate rabbitTemplate) {
+    public RabbitEventSender(
+            RabbitTemplate rabbitTemplate,
+            @Value("${spring.rabbitmq.template.exchange}")
+            String outcomeExchange,
+            @Value("${calculator.routing.key}")
+            String routingKey
+    ) {
         this.rabbitTemplate = rabbitTemplate;
+        this.outcomeExchange = outcomeExchange;
+        this.routingKey = routingKey;
     }
 
     @Override
